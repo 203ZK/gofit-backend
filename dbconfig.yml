@@ -1,0 +1,2 @@
+database:
+  dsn: host=${PG_HOST} dbname=${PG_DBNAME} user=${PG_USER} password=${PG_PASSWORD} sslmode=disable
