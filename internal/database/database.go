@@ -1,31 +1,27 @@
 package database
 
 import (
-	"database/sql"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/203ZK/gofit-backend/internal/config"
+	"gorm.io/gorm"
 
 	_ "github.com/lib/pq"
+	"gorm.io/driver/postgres"
 )
 
-var DB *sql.DB
+var DB *gorm.DB
 
-func ConnectToDB(cfg *config.DBConfig) error {
+func ConnectToDB(cfg *config.DBConfig) (*gorm.DB, error) {
 	dsn := os.ExpandEnv(cfg.Database.DSN)
 
-	var err error
-	DB, err = sql.Open("postgres", dsn)
+	DB, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		return fmt.Errorf("sqlOpen: %w", err)
+		return nil, fmt.Errorf("connecting to database: %w", err)
 	}
 
-	err = DB.Ping()
-	if err != nil {
-		return fmt.Errorf("connecting to database: %w", err)
-	}
-
-	fmt.Println("Connected to DB!")
-	return nil
+	log.Println("Database connection successful")
+	return DB, nil
 }
