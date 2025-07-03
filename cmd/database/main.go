@@ -29,7 +29,9 @@ func main() {
 	}
 
 	switch os.Args[1] {
-	case "seedDBs":
-		database.SeedDBs(db)
+	case "migrateDBs":
+		database.MigrateDBs(db)
+	case "dropDBs":
+		database.DropDBs(db)
 	}
 }
